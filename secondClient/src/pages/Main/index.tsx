@@ -5,7 +5,9 @@ import {
 } from "@ant-design/icons";
 import { Layout, Menu, theme, Button, MenuProps } from "antd";
 import { createElement } from "react";
+import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
+import { useStore } from "@entities/rootStore";
 import { ROUTE } from "../routes";
 
 const { Header, Content, Sider } = Layout;
@@ -37,10 +39,13 @@ const items2: MenuProps["items"] = [
   };
 });
 
-export default function MainPage() {
+const MainPage = observer(() => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  const store = useStore();
+  console.log(store.user.fingerprint);
 
   return (
     <Layout style={{ height: "100%" }}>
@@ -92,4 +97,6 @@ export default function MainPage() {
       </Layout>
     </Layout>
   );
-}
+});
+
+export default MainPage;

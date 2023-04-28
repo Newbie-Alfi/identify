@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { Loader } from "@shared/ui/Loader";
+
 import { ROUTE } from "./routes";
 import { SignInForm } from "./Login/SignIn";
 import { SignUpForm } from "./Login/SignUp";
