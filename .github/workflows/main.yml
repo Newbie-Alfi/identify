@@ -1,0 +1,26 @@
+name: Check the client
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+jobs:
+  check_client:
+    name: Testing&Linting
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./client
+    steps:
+      - name: Get access to files 🛎️
+        uses: actions/checkout@v2.3.1
+
+      - name: Install dependencies🔧
+        run: yarn install --frozen-lockfile
+
+      - name: Run Test 🔨
+        run: yarn test
+
+      - name: Lint code
+        run: yarn lint

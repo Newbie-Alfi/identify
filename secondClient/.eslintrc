@@ -1,0 +1,40 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "airbnb",
+    "airbnb-typescript",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "prettier", "jest"],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": ["./tsconfig.json"]
+  },
+  "globals": {
+    "React": true,
+    "JSX": true
+  },
+  "env": {
+    "browser": true,
+    "jest/globals": true
+  },
+  "rules": {
+    "prettier/prettier": "error",
+    "consistent-return": "off",
+    // Problem with "of" operator
+    "no-restricted-syntax": ["off"],
+    "import/extensions": "off",
+    "import/no-unresolved": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/no-shadow": ["error"],
+    "react/jsx-filename-extension": [2, { "extensions": [".tsx"] }],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": "off",
+    // Problem with typescript interfaces
+    "react/require-default-props": "off"
+  }
+}

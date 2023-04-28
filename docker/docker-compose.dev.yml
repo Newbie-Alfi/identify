@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  client:
+    build:
+      context: .
+      dockerfile: docker/client/Dockerfile.client.dev
+    image: client_dev
+    container_name: client_dev
+    volumes:
+      - ./client:/app
+    ports:
+      - "3000:3000"
+  second_client:
+    build:
+      context: .
+      dockerfile: docker/secondClient/Dockerfile.client.dev
+    image: second_client_dev
+    container_name: second_client_dev
+    volumes:
+      - ./secondClient:/app
+    ports:
+      - "4000:4000"

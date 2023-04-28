@@ -1,0 +1,9 @@
+FROM node:18.11.0-bullseye-slim
+
+WORKDIR /app
+
+COPY docker/client/entrypoint.client.dev.sh /etc
+
+RUN chmod +x /etc/entrypoint.client.dev.sh
+
+ENTRYPOINT ["/etc/entrypoint.client.dev.sh"]
