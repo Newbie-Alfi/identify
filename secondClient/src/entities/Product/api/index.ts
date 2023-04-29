@@ -20,7 +20,7 @@ export const productApi = (fingerprint: string) => {
   };
 
   const pick = async (id: number, params?: AxiosRequestConfig) => {
-    await api.post<IProductResponse>("pick/", { product_id: id }, params);
+    await api.post<IProductResponse>("toggle/", { product_id: id }, params);
   };
 
   return { list, pick };

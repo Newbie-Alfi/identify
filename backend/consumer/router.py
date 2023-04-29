@@ -1,9 +1,9 @@
 from database import AsyncSession, get_db_session
 from dependencies import get_current_user
-from fastapi import APIRouter, Depends, status, Response
+from fastapi import APIRouter, Depends, Response, status
 from models import Product, UserProduct
-from schemas import User, ProductCreate, ProductRead, PickProduct
-from sqlalchemy import select
+from schemas import ProductCreate, ProductRead, ToggleProduct, User
+from sqlalchemy import delete, select
 from sqlalchemy.orm import joinedload
 
 router = APIRouter(prefix="/api/v1", tags=["consumer"])
@@ -42,15 +42,40 @@ async def create_product(
     return new_product
 
 
-@router.post("/products/pick", status_code=status.HTTP_200_OK)
-async def pick_product(
-    data: PickProduct,
+@router.post(
+    "/products/toggle",
+    responses={
+        status.HTTP_201_CREATED: {
+            "description": "Product was selected",
+        },
+        status.HTTP_204_NO_CONTENT: {
+            "description": "Product was unselected",
+        },
+    },
+)
+async def toggle_product_selection(
+    data: ToggleProduct,
     user: User = Depends(get_current_user),
     session: AsyncSession = Depends(get_db_session),
 ):
-    # create a UserProduct relation
-    session.add(UserProduct(user_id=user.id, product_id=data.product_id))
+    result = await session.execute(
+        select(UserProduct).where(
+            UserProduct.user_id == user.id,
+            UserProduct.product_id == data.product_id,
+        )
+    )
+    if result.scalar():
+        # delete
+        query = delete(UserProduct).where(
+            UserProduct.user_id == user.id,
+            UserProduct.product_id == data.product_id,
+        )
+        await session.execute(query)
+        await session.commit()
 
-    await session.commit()
-
-    return Response()
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
+    else:
+        # create a UserProduct relation
+        session.add(UserProduct(user_id=user.id, product_id=data.product_id))
+        await session.commit()
+        return Response(status_code=status.HTTP_201_CREATED)

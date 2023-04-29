@@ -67,7 +67,7 @@ const MainPage = observer(() => {
             items={items1}
           />
           <Link to={ROUTE.SIGN_IN}>
-            <Button type="primary">Войти</Button>
+            {/* <Button type="primary">Войти</Button> */}
           </Link>
         </div>
       </Header>

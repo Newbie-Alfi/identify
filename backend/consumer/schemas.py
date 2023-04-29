@@ -13,7 +13,7 @@ class ProductCreate(ProductBase):
     pass
 
 
-class PickProduct(BaseModel):
+class ToggleProduct(BaseModel):
     product_id: int
 
 
