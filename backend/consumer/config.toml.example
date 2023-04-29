@@ -1,0 +1,9 @@
+[cors]
+allowed_origins = [ "http://localhost", "http://localhost:9000" ]
+
+[database]
+host = "db"
+port = 5432
+user = ""
+password = ""
+name = "consumer"

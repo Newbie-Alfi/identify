@@ -1,6 +1,62 @@
 version: "3.9"
 
 services:
+  db:
+    image: postgres:15.0-bullseye
+    container_name: db_dev
+    volumes:
+      - sso_postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    expose:
+      - "5432"
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+  sso:
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile
+    image: sso_backend_dev
+    container_name: sso_backend_dev
+    command:
+      [
+        "hypercorn",
+        "main:app",
+        "--reload",
+        "--bind",
+        "0.0.0.0:8000"
+      ]
+    volumes:
+      - ./backend/sso:/app # for hot-reload
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+  consumer:
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile
+    image: consumer_backend_dev
+    container_name: consumer_backend_dev
+    command:
+      [
+        "hypercorn",
+        "main:app",
+        "--reload",
+        "--bind",
+        "0.0.0.0:8001"
+      ]
+    volumes:
+      - ./backend/consumer:/app # for hot-reload
+    ports:
+      - "8001:8001"
+    depends_on:
+      db:
+        condition: service_healthy
   client:
     build:
       context: .
@@ -21,3 +77,6 @@ services:
       - ./secondClient:/app
     ports:
       - "4000:4000"
+
+volumes:
+  sso_postgres_data:
