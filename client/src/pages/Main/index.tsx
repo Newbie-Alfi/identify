@@ -5,10 +5,12 @@ import {
 } from "@ant-design/icons";
 import { Layout, Menu, theme, Button, MenuProps } from "antd";
 import { createElement } from "react";
-import { Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
+import { Link } from "react-router-dom";
 import { useStore } from "@entities/rootStore";
 import { ROUTE } from "../routes";
+import { ProductWrapper } from "../../entities/Product/ui/ProductWrapper";
+import { ProductList } from "../../entities/Product/ui/ProductList";
 
 const { Header, Content, Sider } = Layout;
 
@@ -76,8 +78,6 @@ const MainPage = observer(() => {
         >
           <Menu
             mode="inline"
-            defaultSelectedKeys={["1"]}
-            defaultOpenKeys={["sub1"]}
             style={{ height: "100%", borderRight: 0 }}
             items={items2}
           />
@@ -91,7 +91,9 @@ const MainPage = observer(() => {
               background: colorBgContainer,
             }}
           >
-            SomeContent
+            <ProductWrapper>
+              <ProductList />
+            </ProductWrapper>
           </Content>
         </Layout>
       </Layout>
